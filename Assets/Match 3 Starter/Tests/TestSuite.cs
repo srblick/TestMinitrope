@@ -43,4 +43,20 @@ public class TestSuite
         List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
         Assert.AreEqual(3, matches.Count, "No se detectó la combinación de tres fichas.");
     }
+
+    [Test]
+    public void TestMatchFour()
+    {
+        // Crear un patrón donde haya una fila con 4 fichas iguales
+        string[,] charGrid = {
+            { "R", "R", "R", "R" },
+            { "G", "Y", "P", "P" },
+            { "B", "G", "M", "P" }
+        };
+        boardManager.InitializeBoard(charGrid);
+        
+        // Comprobar si la fila 0 tiene una combinación de cuatro fichas "R"
+        List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
+        Assert.AreEqual(4, matches.Count, "No se detectó la combinación de cuatro fichas.");
+    }
 }
