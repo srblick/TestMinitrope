@@ -59,4 +59,20 @@ public class TestSuite
         List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
         Assert.AreEqual(4, matches.Count, "No se detectó la combinación de cuatro fichas.");
     }
+
+    [Test]
+    public void TestNoMatchesAvailable()
+    {
+        // Crear un tablero donde no haya combinaciones
+        string[,] charGrid = {
+            { "R", "G", "B" },
+            { "Y", "P", "M" },
+            { "G", "B", "Y" }
+        };
+        boardManager.InitializeBoard(charGrid);
+
+        // Comprobar que no hay ninguna combinación
+        List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
+        Assert.AreEqual(0, matches.Count, "Se detectaron combinaciones cuando no deberían haberlas.");
+    }
 }
