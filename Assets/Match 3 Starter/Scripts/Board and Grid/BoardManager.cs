@@ -233,10 +233,12 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < DIRECTIONS.Length; i++)
         {
+            Debug.Log(gridPos);
             var currentPos = gridPos;
             while (true)
             {
                 var adjacentPos = currentPos + DIRECTIONS[i];
+                Debug.Log(adjacentPos);
                 if (adjacentPos.x < 0 || adjacentPos.x >= xSize ||
                     adjacentPos.y < 0 || adjacentPos.y >= ySize)
                 {

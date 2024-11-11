@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
 
 public class TestSuite
 {
@@ -13,24 +13,23 @@ public class TestSuite
     [SetUp]
     public void Setup()
     {
-        // Inicializar un objeto BoardManager vacío.
-        GameObject boardManagerObj = new GameObject();
-        boardManager = boardManagerObj.AddComponent<BoardManager>();
-        
-        // Suponiendo que el prefab del "tile" ya está configurado
-        //tilePrefab = new GameObject();  // Crear un prefab vacío solo para la prueba
-        boardManager.tilePrefab = tilePrefab;
-        
-        // Crear un tablero de prueba con tamaño 3x3
-        testTiles = new Tile[3, 3];
-        boardManager.xSize = 3;
-        boardManager.ySize = 3;
-        
+        // Inicializar un objeto BoardManager.
+        GameObject boardManagerObj = 
+            Object.Instantiate(Resources.Load<GameObject>("Prefabs/Tile"));
+
+        boardManager = boardManagerObj.GetComponent<BoardManager>();
     }
 
-    [Test]
-    public void TestMatchThree()
+    [UnityTest]
+    public IEnumerator TestMatchThree()
     {
+        
+        //tilePrefab = new GameObject();  // Crear un prefab vacío solo para la prueba
+        //boardManager.tilePrefab = tilePrefab;
+        
+        // Crear un tablero de prueba con tamaño 3x3
+        boardManager.xSize = 3;
+        boardManager.ySize = 3;
         // Crear fichas en un patrón horizontal con 3 fichas iguales en la fila 0
         string[,] charGrid = {
             { "R", "R", "R" },
@@ -40,13 +39,18 @@ public class TestSuite
 
         boardManager.InitializeBoard(charGrid);
         // Comprobar si la fila superior (0) tiene una combinación de tres fichas "R"
+        yield return new WaitForSeconds(0.1f);
         List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
         Assert.AreEqual(3, matches.Count, "No se detectó la combinación de tres fichas.");
     }
 
-    [Test]
-    public void TestMatchFour()
+    [UnityTest]
+    public IEnumerator TestMatchFour()
     {
+        // Crear un tablero de prueba con tamaño 3x3
+        boardManager.xSize = 4;
+        boardManager.ySize = 3;
+
         // Crear un patrón donde haya una fila con 4 fichas iguales
         string[,] charGrid = {
             { "R", "R", "R", "R" },
@@ -54,15 +58,19 @@ public class TestSuite
             { "B", "G", "M", "P" }
         };
         boardManager.InitializeBoard(charGrid);
+        yield return new WaitForSeconds(0.1f);
         
         // Comprobar si la fila 0 tiene una combinación de cuatro fichas "R"
         List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
         Assert.AreEqual(4, matches.Count, "No se detectó la combinación de cuatro fichas.");
     }
 
-    [Test]
-    public void TestNoMatchesAvailable()
+    [UnityTest]
+    public IEnumerator TestNoMatchesAvailable()
     {
+        // Crear un tablero de prueba con tamaño 3x3
+        boardManager.xSize = 3;
+        boardManager.ySize = 3;
         // Crear un tablero donde no haya combinaciones
         string[,] charGrid = {
             { "R", "G", "B" },
@@ -70,6 +78,7 @@ public class TestSuite
             { "G", "B", "Y" }
         };
         boardManager.InitializeBoard(charGrid);
+        yield return new WaitForSeconds(0.1f);
 
         // Comprobar que no hay ninguna combinación
         List<GameObject> matches = boardManager.FindMatches(new Vector2Int(0, 0));
