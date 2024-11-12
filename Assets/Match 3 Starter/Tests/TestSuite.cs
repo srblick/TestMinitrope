@@ -7,17 +7,33 @@ using System.Collections.Generic;
 public class TestSuite
 {
     private BoardManager boardManager;
-    private GameObject tilePrefab;
-    private Tile[,] testTiles;
+    public GameObject tilePrefab;
+    private Tile tile;
 
     [SetUp]
     public void Setup()
     {
         // Inicializar un objeto BoardManager.
-        GameObject boardManagerObj = 
-            Object.Instantiate(Resources.Load<GameObject>("Prefabs/Tile"));
+        GameObject boardManagerObj = new GameObject();
+        boardManager = boardManagerObj.AddComponent<BoardManager>();
 
-        boardManager = boardManagerObj.GetComponent<BoardManager>();
+        // Cargar el prefab de tile desde la carpeta Resources
+        tilePrefab = Resources.Load<GameObject>("Prefabs/Tile");
+        
+        // Asegúrate de que el prefab se haya cargado correctamente
+        Assert.IsNotNull(tilePrefab, "El prefab 'Tile' no se pudo cargar desde Resources.");
+
+        // Asignar el prefab a boardManager
+        boardManager.tilePrefab = tilePrefab;
+
+        //GameObject tilePrefab = Object.Instantiate(Resources.Load<GameObject>("Prefabs/Tile"));
+        //tilePrefab = tilePrefabOj.GetComponent<>;
+        // Inicializar un objeto BoardManager.
+        //GameObject boardManagerObj = new GameObject();
+           // Object.Instantiate(Resources.Load<GameObject>("Prefabs/Tile"));
+        //boardManager = boardManagerObj.AddComponent<BoardManager>();
+        //boardManager.tilePrefab = tilePrefab;
+
     }
 
     [UnityTest]
